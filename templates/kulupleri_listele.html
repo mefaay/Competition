@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <title>Kulüp Listele</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #343a40;
+            padding-top: 20px;
+            border-right: 1px solid #ddd;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #818181;
+            display: flex;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 10px;
+            z-index: 0;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .flag-img {
+            width: 30px;
+            height: auto;
+            margin-right: 5px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            width: 75px;
+        }
+
+        /* Yeni eklenen stiller */
+        .table {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+
+        th {
+            background-color: #f1f1f1;
+        }
+
+        .btn {
+            border-radius: 5px;
+            margin: 2px;
+        }
+		.sidebar-footer {
+    margin-top: auto; /* sidebar'ın altına itmek için */
+    padding: 10px;
+    font-size: 12px;
+    color: #818181;
+}
+    </style>
+</head>
+<body>
+<div class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#"><i class="fas fa-book"></i> Kullanma Talimatları</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-life-ring"></i> Destek</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-info-circle"></i> Hakkında</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+<div class="sidebar">
+    <div class="sidebar-content">
+        <div class="logo">
+            <img alt="Logo" src="{{ url_for('static', filename='tmpflogo.png') }}" />
+        </div>
+        <a href="{{ url_for('dashboard') }}">
+            <i class="fas fa-tachometer-alt"></i> Ana Panel
+        </a>
+        <a href="{{ url_for('musabakalar') }}">
+            <i class="fas fa-trophy"></i> Müsabakalar
+        </a>
+        <a href="{{ url_for('sporcu_listesi') }}">
+            <i class="fas fa-users"></i> Sporcular
+        </a>
+        <a href="/kulupleri_listele">
+            <i class="fas fa-building"></i> Kulüpler
+        </a>
+		<a href="/live">
+			<i class="fas fa-medal"></i>Sonuçlar
+		</a>
+        <a href="{{ url_for('cikis') }}">
+            <i class="fas fa-sign-out-alt"></i> Çıkış
+        </a>
+    </div>
+    <div class="sidebar-footer">
+        <center><p>&copy; Mefaay <p> Tüm hakları Modern Pentatlon Federasyonuna aittir.</center>
+    </div>
+</div>
+
+<div class="content">
+    <!-- Sayfa başlığı, "Kulüp Ekle" butonu ve Arama çubuğu -->
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+        <h2>Kulüpler</h2>
+        <div>
+            <!-- Arama çubuğu -->
+            <input type="text" id="kulupAra" class="form-control d-inline-block" placeholder="Kulüp ara..." style="width: auto; margin-right: 10px;">
+            <a class="btn btn-success" href="{{ url_for('kulup_ekle') }}">
+                <i class="fas fa-plus"></i> Kulüp Ekle
+            </a>
+        </div>
+    </div>
+
+
+
+    <table class="table table-bordered">
+            <thead>
+                <tr>
+					<th>Sıra No</th> <!-- Sıralama numarası için yeni başlık -->
+                    <th>Kulüp Adı</th>
+					<th>Yetkili Ünvan</th>
+                    <th>Yetkili Adı Soyadı</th>
+                    <th>İletişim</th>
+                    <th>İl</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for kulup in kulupler %}
+                <tr>
+					<td>{{ loop.index }}-</td> <!-- Sıralama numarası ekledik -->
+                    <td>{{ kulup[1] }}</td>
+					<td>{{ kulup[2] }}</td>
+                    <td>{{ kulup[3] }}</td>
+                    <td>{{ kulup[4] }}</td>
+                    <td>{{ kulup[7] }}</td>
+                    <td>
+                        <a class="btn btn-info btn-sm" href="{{ url_for('kulup_detay', id=kulup[0]) }}">
+                            <i class="fas fa-eye"></i> Detay
+                        </a>
+                        <a class="btn btn-warning btn-sm" href="{{ url_for('kulup_guncelle', id=kulup[0]) }}">
+                            <i class="fas fa-edit"></i> Güncelle
+                        </a>
+                        <a class="btn btn-danger btn-sm" href="{{ url_for('kulup_sil', id=kulup[0]) }}" onclick="return confirm('Bu kulübü silmek istediğinizden emin misiniz?');">
+                            <i class="fas fa-trash"></i> Sil
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+	<script>
+	function turkceKucult(metin) {
+    return metin.replace(/İ/g, 'i').toLowerCase().replace(/ı/g, 'i');
+}
+
+document.getElementById('kulupAra').addEventListener('keyup', function() {
+    let aramaTerimi = turkceKucult(this.value);
+    let satirlar = document.querySelectorAll("tbody tr");
+    
+    satirlar.forEach(function(satir) {
+        let hücreler = satir.querySelectorAll("td");
+        let eslesme = false; // varsayılan olarak eşleşme yok
+
+        // Her bir hücre için kontrol
+        hücreler.forEach(function(hücre) {
+            if (turkceKucult(hücre.textContent).indexOf(aramaTerimi) !== -1) {
+                eslesme = true;
+            }
+        });
+
+        // Eşleşme varsa satırı göster, yoksa gizle
+        if (eslesme) {
+            satir.style.display = "";
+        } else {
+            satir.style.display = "none";
+        }
+    });
+});
+
+	</script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

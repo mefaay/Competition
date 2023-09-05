@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <title>Kulüp Ekle</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+   <style>
+  .sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #343a40;
+    padding-top: 20px;
+    border-right: 1px solid #ddd;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidebar a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #818181;
+    display: flex;
+    align-items: center; /* İçerikleri dikeyde hizala */
+    transition: 0.3s;
+  }
+  
+  .sidebar a:hover {
+    color: #f1f1f1;
+  }
+        .content {
+            margin-left: 250px;
+            padding: 10px;
+			z-index: 0;
+        }
+        .container {
+            margin-top: 50px;
+        }
+		.flag-img {
+            width: 30px; /* Bayrak boyutunu istediğiniz gibi ayarlayabilirsiniz */
+            height: auto;
+            margin-right: 5px;
+        }
+		.logo {
+    text-align: center;
+    margin-bottom: 20px; /* Gerekirse logo ile menü arasındaki boşluğu ayarlayabilirsiniz */
+  }
+  .logo img {
+    width: 75px;
+  }
+  
+  .form-control {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: border 0.2s, box-shadow 0.2s;
+  }
+
+  .form-control:focus {
+    border-color: #495057;
+    box-shadow: 0 0 0 0.2rem rgba(73, 80, 87, 0.25);
+  }
+
+  .form-group > label {
+    font-weight: 550; /* Etiketler için font ağırlığını artırma */
+  }
+
+  .btn-primary {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
+  }
+  .sidebar-footer {
+    margin-top: auto; /* sidebar'ın altına itmek için */
+    padding: 10px;
+    font-size: 12px;
+    color: #818181;
+}
+</style>
+</head>
+<body>
+<div class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#"><i class="fas fa-book"></i> Kullanma Talimatları</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-life-ring"></i> Destek</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-info-circle"></i> Hakkında</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+<div class="sidebar">
+    <div class="sidebar-content">
+        <div class="logo">
+            <img alt="Logo" src="{{ url_for('static', filename='tmpflogo.png') }}" />
+        </div>
+        <a href="{{ url_for('dashboard') }}">
+            <i class="fas fa-tachometer-alt"></i> Ana Panel
+        </a>
+        <a href="{{ url_for('musabakalar') }}">
+            <i class="fas fa-trophy"></i> Müsabakalar
+        </a>
+        <a href="{{ url_for('sporcu_listesi') }}">
+            <i class="fas fa-users"></i> Sporcular
+        </a>
+        <a href="/kulupleri_listele">
+            <i class="fas fa-building"></i> Kulüpler
+        </a>
+		<a href="/live">
+			<i class="fas fa-medal"></i>Sonuçlar
+		</a>
+        <a href="{{ url_for('cikis') }}">
+            <i class="fas fa-sign-out-alt"></i> Çıkış
+        </a>
+    </div>
+    <div class="sidebar-footer">
+        <center><p>&copy; Mefaay <p> Tüm hakları Modern Pentatlon Federasyonuna aittir.</center>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container">
+        <h2 class="mb-4">Kulüp Ekle</h2>
+        
+        <!-- Kart başlangıcı -->
+        <div class="card">
+            <div class="card-header">
+                Kulüp Bilgileri
+            </div>
+            <div class="card-body">
+                <form action="/kulup_ekle" method="post">
+
+            <div class="form-group">
+                <label for="kulup_adi">Kulüp Adı:</label>
+                <input type="text" name="kulup_adi" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="yetkili_unvan">Kulüp Yetkilisi:</label>
+                <select name="yetkili_unvan" class="form-control">
+                    <option value="Başkan">Başkan</option>
+                    <option value="Antrenör">Antrenör</option>
+                    <option value="İdareci">İdareci</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="yetkili_ad_soyad">Yetkili Adı Soyadı:</label>
+                <input type="text" name="yetkili_ad_soyad" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="yetkili_iletisim_numarasi">Yetkili İletişim Numarası:</label>
+                <input type="text" name="yetkili_iletisim_numarasi" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="kulup_eposta">Kulüp E-posta Adresi:</label>
+                <input type="email" name="kulup_eposta" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="kulup_iban">Kulüp IBAN:</label>
+                <input type="text" name="kulup_iban" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="kulup_il">Kulüp İli:</label>
+                <input type="text" name="kulup_il" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                        <input type="submit" value="Kulüp Ekle" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Kart sonu -->
+
+    </div>
+</div>
+
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

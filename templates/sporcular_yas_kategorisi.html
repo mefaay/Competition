@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sporcular - {{ yas_kategorisi }}</title>
+</head>
+<body>
+    <h2>Sporcular - {{ yas_kategorisi }}</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Adı Soyadı</th>
+                <th>Ülkesi</th>
+                <th>Kulübü</th>
+				<th>Yaş Kategorisi</th>
+                <th>Lazer Run</th>
+                <th>Yüzme</th>
+                <th>Eskrim</th>
+                <th>OBS</th>
+                <th>Toplam Puan</th>
+                <!-- Diğer sütun başlıklarını ekleyebilirsiniz -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for sporcu in sporcular %}
+            <tr>
+                <td>{{ sporcu[0] }}</td>
+                <td>{{ sporcu[2] }}</td>
+                <td>{{ sporcu[3] }}</td>
+                <td>{{ sporcu[4] }}</td>
+                <td>{{ sporcu[5] }}</td>
+                <td>{{ sporcu[6] }}</td>
+                <td>{{ sporcu[7] }}</td>
+                <td>{{ sporcu[8] }}</td>
+                <td>{{ sporcu[9] }}</td>
+				<td>{{ sporcu[10] }}</td>
+                <!-- Diğer sütun verilerini ekleyebilirsiniz -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+	<footer class="footer text-center">
+    <p>&copy; Mefaay (Mehmet Faruk AYDIN) Tüm hakları saklıdır.</p>
+</footer>
+</body>
+</html>
